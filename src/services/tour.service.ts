@@ -44,7 +44,7 @@ const getNextSchedule = async (id: string): Promise<any> => {
 
   return {
     tour,
-    nextSchedule
+    nextSchedule,
   }
 }
 

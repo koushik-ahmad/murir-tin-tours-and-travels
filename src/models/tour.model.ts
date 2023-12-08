@@ -52,10 +52,9 @@ tourSchema.virtual('durationDays').get(function () {
 })
 
 tourSchema.virtual('reviews', {
-  ref: "Review",
-  foreignField: "tour",
-  localField: "_id",
-  
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
 })
 
 tourSchema.pre('save', function (next) {
@@ -71,8 +70,9 @@ tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
   const futureDates = this.startDates.filter((startDate: Date) => {
     return startDate > today
   })
+  //   65893905746394 - 4873843278478478
 
-  futureDates.sort((a: Date, b: Date) => a.getDate() - b.getDate())
+  futureDates.sort((a: Date, b: Date) => a.getTime() - b.getTime())
 
   const nearestStartDate = futureDates[0]
   const estimatedEndDate = new Date(
@@ -86,6 +86,6 @@ tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
 }
 
 // pre hook for Query middleware
-const Tour = model<ITour>('Tour', tourSchema)
+const Tour = model<ITour, TTourModel>('Tour', tourSchema)
 
 export default Tour
