@@ -1,8 +1,8 @@
 import express, { Application, Request, Response } from 'express'
 import { userRoutes } from './routes/user.route'
-import cors from 'cors'
 import { tourRoutes } from './routes/tour.route'
 import { reviewRoutes } from './routes/review.route'
+import cors from 'cors'
 
 const app: Application = express()
 
