@@ -1,98 +1,84 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { userServices } from '../services/user.service'
+import sendSuccessResponse from '../utils/sendResponse'
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userDate = req.body
     const result = await userServices.createUser(userDate)
 
-    res.status(201).json({
-      status: 'success',
+    sendSuccessResponse(res, {
+      statusCode: 201,
       message: 'User created successfully',
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
-const getAllUsers = async (req: Request, res: Response) => {
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await userServices.getAllUsers()
 
-    res.status(200).json({
-      status: 'success',
+    sendSuccessResponse(res, {
+      statusCode: 201,
       message: 'User fetched successfully',
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getSingleUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const id = req.params.id
     const result = await userServices.getSingleUser(id)
 
-    res.status(200).json({
-      status: 'success',
+    sendSuccessResponse(res, {
+      statusCode: 201,
       message: 'Single User fetched successfully',
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userDate = req.body
     const id = req.params.id
     const result = await userServices.updateUser(id, userDate)
 
-    res.status(200).json({
-      status: 'success',
+    sendSuccessResponse(res, {
+      statusCode: 201,
       message: 'User updated successfully',
       data: result,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id
     await userServices.deleteUser(id)
 
-    res.status(200).json({
-      status: 'success',
+    sendSuccessResponse(res, {
+      statusCode: 201,
       message: 'User deleted successfully',
+      data: null,
     })
   } catch (error: any) {
-    console.log(error)
-    res.status(500).json({
-      status: 'fail',
-      message: error.message || 'Something went wrong',
-    })
+    next(error)
   }
 }
 
