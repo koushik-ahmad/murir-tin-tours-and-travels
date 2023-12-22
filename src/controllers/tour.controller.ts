@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { tourServices } from '../services/tour.service'
 import sendSuccessResponse from '../utils/sendResponse'
 import catchAsyncFunction from '../utils/catchAsync'
+import { createTourZodSchema } from '../validations/tour.validation'
 
 // const fn = async () => {
 //   const anotherFn = async () => {}
@@ -22,9 +23,16 @@ import catchAsyncFunction from '../utils/catchAsync'
 // sathe req, res, next diye dibe -> jei function ta router call korsilo shei function
 // amader nijosho function call kore dibe with req, res next
 
+
 const createTour = catchAsyncFunction(async (req: Request, res: Response) => {
-  const tourDate = req.body
-  const result = await tourServices.createTour(tourDate)
+  const tourData = req.body
+  const validatedData = createTourZodSchema.parse(tourData)
+
+  if (!validatedData) {
+    throw new Error('Validation Failed')
+  }
+
+  const result = await tourServices.createTour(validatedData)
 
   sendSuccessResponse(res, {
     statusCode: 201,

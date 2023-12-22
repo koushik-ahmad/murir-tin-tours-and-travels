@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import { IBooking } from '../interfaces/booking.interface'
 import Booking from '../models/booking.model'
 import Tour from '../models/tour.model'
+import GenericError from '../classes/errorClasses/GenericError'
 
 // const createBookingWithoutTransaction = async (
 //   bookingData: IBooking,
@@ -46,7 +47,8 @@ const createBooking = async (bookingData: IBooking): Promise<IBooking> => {
 
     //so booking is an array of object with one object
     if (!booking) {
-      throw new Error('Booking failed')
+      // throw new Error('Booking failed')
+      throw new GenericError('booking Failed', 400)
     }
 
     // throw new Error('Booking failed fake error')
@@ -60,7 +62,8 @@ const createBooking = async (bookingData: IBooking): Promise<IBooking> => {
       },
     )
     if (!tour) {
-      throw new Error('Tour Update in booking failed')
+      // throw new Error('Tour Update in booking failed')
+      throw new GenericError('Tour Update in booking failed', 400)
     }
 
     await session.commitTransaction()
@@ -72,7 +75,8 @@ const createBooking = async (bookingData: IBooking): Promise<IBooking> => {
   } catch (error: any) {
     await session.abortTransaction()
     await session.endSession()
-    throw new Error(error)
+    // throw new Error(error)
+    throw new GenericError(error.message, 400)
   }
 }
 

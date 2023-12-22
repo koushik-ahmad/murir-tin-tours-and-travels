@@ -67,6 +67,6 @@ reviewSchema.statics.calcAverageRatings = async function (
 
 // pre hook for Query middleware
 
-const Review = model<IReview , IReviewModel>('Review', reviewSchema)
+const Review = model<IReview, IReviewModel>('Review', reviewSchema)
 
 export default Review
